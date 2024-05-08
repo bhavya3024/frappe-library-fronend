@@ -1,8 +1,7 @@
 import { Input, Modal } from 'antd';
 import { useState } from 'react';
-import axios from 'axios';
-import { API_URL } from '../../../constants';
 import propTypes from 'prop-types';
+import { patch } from '../../../utils/api';
 
 
 export function BookStockAmount({
@@ -14,8 +13,12 @@ export function BookStockAmount({
     const [stockAmount, setStockAmount] = useState(1);
 
     const addStocks = async () => {
-        await axios.patch(`${API_URL}/books/${bookId}/stock-amounts`, {
-            stock_amount: stockAmount,
+        await patch({
+            path: `/books/${bookId}/stock-amounts`,
+            data: {
+                stock_amount: stockAmount,
+            },
+            notification: true,
         });
     }
 

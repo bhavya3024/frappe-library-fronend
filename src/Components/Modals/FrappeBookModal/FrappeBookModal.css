@@ -1,0 +1,20 @@
+.frappe-book-modal {
+    width: 80%!important;
+}
+
+.frappe-books-table {
+    width: 100%;
+}
+
+.table-custom-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 10px;
+}
+/* 
+.css-dev-only-do-not-override-1kuana8 {
+    display: none!important;
+} */

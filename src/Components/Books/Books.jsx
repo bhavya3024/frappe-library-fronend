@@ -1,67 +1,12 @@
-import { Typography, Table } from 'antd';
+import { Table, Button } from 'antd';
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import { bookSelected } from '../../actions/books'
 import { API_URL } from '../../constants';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import FrappeBookModal from '../Modals/FrappeBookModal/FrappeBookModal'
 import './books.css';
-
-const { Text } = Typography;
-
-
-// Example usage
-
-
-/*
-authors
-: 
-["Jorge Luis Borges", "Eliot Weinberger"]
-average_rating
-: 
-4.33
-created_at
-: 
-"2024-03-30T19:07:53.812739"
-frappe_book_id
-: 
-17946
-id
-: 
-2
-isbn
-: 
-"0811209059"
-isbn13
-: 
-"9780811209052"
-language_code_id
-: 
-1
-num_pages
-: 
-121
-publication_date
-: 
-"1985-05-29"
-publisher_name
-: 
-"New Directions Publishing Corporation"
-ratings_count
-: 
-1037
-stock_amount
-: 
-99
-text_reviews_count
-: 
-60
-title
-: 
-"Seven Nights"
-updated_at
-: 
-"2024-04-06T20:09:53.938074"
-*/
+import { get } from '../../utils/api';
 
 const columns = [{
     key: 'id',
@@ -106,13 +51,17 @@ const Books = ({
     onBookItemSelected,
 }) => {
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     const [books, setBooks] = useState([]);
     const [booksCount, setBooksCount] = useState(0);
     const [page, setCurrentPage] = useState(1);
     const [limit, setLimit] = useState(10);
+    const [frappeBookModalOpen, setFrappeBookModalOpen] = useState(false);
+
     const fetchBooks = async () => {
-        const { data: { books: bookItems = [], booksCount } } = await axios.get(`${API_URL}/books`, {
+        const { books: bookItems = [], booksCount } = await get({
+            dispatch,
+            path: `${API_URL}/books`, 
             params: {
                 page,
                 limit,
@@ -143,9 +92,15 @@ const Books = ({
 
     return (
         <div className='books-library'>
-            <Text><h2>Books</h2></Text>
             <Table className='books-table'
                 columns={columns}
+                title={() => {
+                    return(<div className='members-table-header'><h1>Books</h1>
+                       <Button className='add-member-button' type='primary' onClick={() => {
+                          setFrappeBookModalOpen(true);
+                       }}>Import New Books From the Library</Button>
+                    </div>);
+                }}
                 dataSource={books}
                 onChange={(event) => {
                     if (typeof event?.current === 'number' && event?.current !== page) {
@@ -162,6 +117,7 @@ const Books = ({
                 onRow={(record) => {
                     return {
                         onClick() {
+                             navigate(`/books/${record.id}`);
                             onBookItemSelected();
                             dispatch(bookSelected({
                                 bookId: record.id,
@@ -173,6 +129,9 @@ const Books = ({
                     y: 600,
                 }}
             />
+            <FrappeBookModal isOpen={frappeBookModalOpen} onClose={() => {
+                 setFrappeBookModalOpen(false);
+            }} />
         </div>
     );
 };

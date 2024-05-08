@@ -1,14 +1,14 @@
 import { Table, Card, Progress, Tag, Space, Button } from 'antd';
 import { CheckCircleFilled, } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import './BookDetails.css';
-import { API_URL } from '../../constants';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import './BookDetails.css';
 import moment from 'moment';
 import { BookStockAmount } from '../Modals/BookStocks/AddBookStocks';
 import { AddBookMembers } from '../Modals/AddBookMemebers/AddBookMembers';
+import { get, patch } from '../../utils/api';
+import { useDispatch } from 'react-redux';
 
 
 function stringToColor(string) {
@@ -32,7 +32,8 @@ function stringToColor(string) {
 
 
 const BookDetails = () => {
-    const { bookId } = useSelector((state) => state.bookReducer);
+    const { id: bookId } = useParams();
+    const dispatch = useDispatch();
     const [book, setBook] = useState({});
     const [bookMembersList, setBookMembersList] = useState([]);
     const [bookMembersCount, setBookMembersCount] = useState(0);
@@ -104,16 +105,22 @@ const BookDetails = () => {
     },]
 
     const clearDues = async (bookMemberId) => {
-        await axios.patch(`${API_URL}/book-members/${bookMemberId}/pay-dues`);
+        await patch({
+            dispatch,
+            path: `/book-members/${bookMemberId}/pay-dues`,
+            notification: true,
+        });
         await getBookMembers();
     };
 
     const getBookMembers = async () => {
-        const { data: { bookMembers, bookMembersCount } } = await axios.get(`${API_URL}/books/${bookId}/members`, {
+        const { bookMembers, bookMembersCount } = await get({
+            dispatch,
+            path: `/books/${bookId}/members`,
             params: {
                 page,
                 limit
-            }
+            },
         });
         const bookMembersJson = JSON.parse(bookMembers);
         setBookMembersList(() => [...bookMembersJson]);
@@ -121,7 +128,10 @@ const BookDetails = () => {
     }
 
     const getBookDetails = async () => {
-        const { data: { book = {} } } = await axios.get(`${API_URL}/books/${bookId}`);
+        const { book = {} } = await get({
+          path:  `/books/${bookId}`,
+          dispatch,
+        });
         setBook(() => ({
             ...book
         }));

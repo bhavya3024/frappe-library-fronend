@@ -1,0 +1,13 @@
+.members-table {
+    width: 100%;
+}
+
+.members-table-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-member-button {
+    margin-top: auto;
+    margin-bottom: auto;
+}

@@ -1,11 +1,11 @@
 import { Button, DatePicker, Modal, Table } from 'antd';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { API_URL } from '../../../constants';
 import propTypes from 'prop-types';
 import './AddBookMembers.css';
 import dayjs from 'dayjs';
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import { get, post } from '../../../utils/api';
 
 const format = 'YYYY-MM-DD';
 
@@ -23,6 +23,7 @@ export function AddBookMembers({
     const currentDate = moment().format(format);
     const [rentStartDate, setRentStartDate] = useState(dayjs(currentDate, format));
     const [rentEndDate, setRentEndDate] = useState(dayjs(currentDate, format));
+    const dispatch = useDispatch();
 
 
     const columns = [{
@@ -56,24 +57,31 @@ export function AddBookMembers({
     }]
 
     const getMembersList = async () => {
-        const { data: { newMembers, membersCount } } = await axios.get(`${API_URL}/books/${bookId}/members`, {
+        const { newMembers, membersCount } = await get({
+            dispatch,
+            path: `/books/${bookId}/members`,
             params: {
                 page,
                 limit,
                 add_new_members: true,
-            }
+            },
         });
         const newMembersJson = JSON.parse(newMembers);
         setMembersList(() => [...newMembersJson]);
         setMembersCount(() => membersCount);
     };
 
-    const addBookMember =  async (memberId) => {
-        const { data } = await axios.post(`${API_URL}/book-members`, {
+    const addBookMember = async (memberId) => {
+        await post({
+            dispatch,
+            path: `/book-members`,
+            data: {
                 book_id: bookId,
                 rent_start_date: rentStartDate.format(format),
                 rent_end_date: rentEndDate.format(format),
                 member_id: memberId,
+            },
+            notification: true,
         });
         if (isOpen) {
             getMembersList();

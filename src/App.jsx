@@ -4,15 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 function App() {
   const navigate = useNavigate();
-  
+
   return (
-    <>
-       <Card title={"Welcome to Frappe library management system"} style={{ 
-         width: 500
-       }}>
-            <Button onClick={() =>  navigate('/dashboard')}>Click here to Login</Button>
-       </Card>
-    </>
+    <div className="frappe-main-page">
+      <Card title={"Welcome to Frappe Library management system"} className="frappe-dummy-login-card">
+        <Button className="frappe-login-button" onClick={() => navigate('/books')}>Click here to Login</Button>
+      </Card>
+    </div>
   )
 }
 
