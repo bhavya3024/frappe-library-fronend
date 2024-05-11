@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Card, Table } from 'antd';
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { get } from '../../utils/api';
+import { useParams } from 'react-router-dom';
 
 const columns = [{
     key: 'id',
@@ -65,7 +66,9 @@ const columns = [{
 ]
 
 const MemberDetails = () => {
-    const { memberId } = useSelector((state) => state.memberReducer);
+    let member = useSelector((state) => state.memberReducer);
+    // eslint-disable-next-line
+    const memberId = member.memberId ||  parseInt(useParams().id);
     const [memberBooks, setMemberBooks] = useState([]);
     const [memberDetails, setMemberDetails] = useState({});
     const [memberBooksCount, setMemberBooksCount] = useState(0);

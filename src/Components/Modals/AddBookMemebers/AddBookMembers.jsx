@@ -99,7 +99,7 @@ export function AddBookMembers({
         <Modal className='add-members-modal' title="Add Members to book" open={isOpen} onOk={async () => {
             onClose(true);
         }} onCancel={() => {
-            onClose(false);
+            onClose(true);
         }}>
             <span><strong>Rent Start Date: </strong></span>
             <DatePicker className='date-picker' value={rentStartDate} minDate={dayjs(currentDate, format)} onChange={(event) => {
