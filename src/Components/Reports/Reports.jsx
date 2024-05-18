@@ -106,6 +106,7 @@ const ApexChart = () => {
         
     }
 
+
     useEffect(() => {
         callApis();
         if (chartRef.current) {

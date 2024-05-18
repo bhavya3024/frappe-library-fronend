@@ -1,5 +1,7 @@
 import ReactApexChart from "react-apexcharts"
 import propTypes from 'prop-types';
+import { useEffect } from "react";
+import { Card } from "antd";
 
 
 export default function Chart({
@@ -10,17 +12,25 @@ export default function Chart({
     width = 350,
     title = '',
 }) {
+
+    useEffect(() => {
+        // https://github.com/apexcharts/vue-apexcharts/issues/185#issuecomment-642836287
+        window.dispatchEvent(new Event('resize'));
+    }, []);
+
+
     return (
         <div>
-            <h3>{title}</h3>
-            <ReactApexChart
-                options={options}
-                series={series}
-                type={type}
-                height={height}
-                width={width}
-                title={title}
-            />
+            <Card title={title}>
+                <ReactApexChart
+                    options={options}
+                    series={series}
+                    type={type}
+                    height={height}
+                    width={width}
+                    title={title}
+                />
+            </Card>
         </div>
     );
 }
