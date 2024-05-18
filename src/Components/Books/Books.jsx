@@ -131,6 +131,7 @@ const Books = ({
             />
             <FrappeBookModal isOpen={frappeBookModalOpen} onClose={() => {
                  setFrappeBookModalOpen(false);
+                 fetchBooks();
             }} />
         </div>
     );

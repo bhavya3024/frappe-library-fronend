@@ -9,8 +9,6 @@ import {
 import Dashboard from './Components/Dashboard/Dashboard.jsx'
 import store from './store.js';
 import { Provider } from 'react-redux'
-import BookDetails from './Components/BookDetail/BookDetails.jsx'
-import MemberDetails from './Components/MemberDetail/MemberDetail.jsx'
 
 const router = createBrowserRouter([
   {
@@ -23,7 +21,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/books/:id',
-    element: <BookDetails />
+    element: <Dashboard />
   },
   {
     path: '/members',
@@ -31,7 +29,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/members/:id',
-    element: <MemberDetails />
+    element: <Dashboard />
+  },
+  {
+    path: '/reports',
+    element: <Dashboard />
   }
 ])
 
