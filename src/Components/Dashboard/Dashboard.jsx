@@ -25,7 +25,7 @@ const items = [
         label: <>Reports</>
     },
     {
-        key: 'Logout',
+        key: 'logout',
         label: <>Logout</>
     }
 ];
@@ -41,6 +41,8 @@ const Dashboard = () => {
             setKey(id ? 'bookDetails' : 'books');
         } else if (pathname.startsWith('/members')) {
             setKey(id ? 'memberDetails' : 'members');
+        } else if (pathname.startsWith('/reports')) {
+            setKey('reports');
         }
     }
 
@@ -55,6 +57,10 @@ const Dashboard = () => {
             navigate('/books');
         } else if (selectedKey === 'members') {
             navigate('/members');
+        } else if (selectedKey === 'reports') {
+            navigate('/reports');
+        } else if (selectedKey === 'logout') {
+            navigate('/');
         }
     };
 

@@ -31,4 +31,5 @@ Chart.propTypes = {
     width: propTypes.number,
     height: propTypes.number,
     type: propTypes.string,
+    title: propTypes.string
 }
